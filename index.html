@@ -436,7 +436,7 @@ function startButton(event) {
   final_transcript = '';
   recognition.lang = select_dialect.value;
   recognition.start();
-  ignore_onend = false;
+  ignore_onend = true;
   final_span.innerHTML = '';
   interim_span.innerHTML = '';
   start_img.src = 'mic-slash.gif';
