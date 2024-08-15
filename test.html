@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Speech Recognition API Check</title>
+    <title>Speech Recognition Test</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -14,28 +14,58 @@
             font-size: 1.5em;
             margin-top: 20px;
         }
+        #result {
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: #333;
+        }
     </style>
 </head>
 <body>
-    <h1>Speech Recognition API Check</h1>
+    <h1>Speech Recognition API Test</h1>
     <p id="status" class="status">Checking for Speech Recognition API support...</p>
+    <button id="startButton" style="display:none;">Start Recording</button>
+    <div id="result"></div>
 
     <script>
-        // Function to check if the browser supports SpeechRecognition
         function checkSpeechRecognition() {
-            // Check for SpeechRecognition in window
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
             if (SpeechRecognition) {
-                // SpeechRecognition is supported
-                document.getElementById('status').textContent = 'Your browser supports Speech Recognition API.';
+                document.getElementById('status').textContent = 'Speech Recognition API supported. Click "Start Recording" to test.';
+                document.getElementById('startButton').style.display = 'inline-block';
+
+                const recognition = new SpeechRecognition();
+                recognition.lang = 'en-US';
+                recognition.interimResults = true;
+                recognition.continuous = true;
+
+                recognition.onresult = (event) => {
+                    let transcript = '';
+                    for (let i = event.resultIndex; i < event.results.length; i++) {
+                        transcript += event.results[i][0].transcript;
+                    }
+                    document.getElementById('result').textContent = transcript;
+                };
+
+                recognition.onerror = (event) => {
+                    document.getElementById('status').textContent = 'Error occurred: ' + event.error;
+                };
+
+                recognition.onend = () => {
+                    document.getElementById('status').textContent = 'Recording ended.';
+                };
+
+                document.getElementById('startButton').onclick = () => {
+                    recognition.start();
+                    document.getElementById('status').textContent = 'Recording started. Speak now...';
+                };
+
             } else {
-                // SpeechRecognition is not supported
                 document.getElementById('status').textContent = 'Sorry, your browser does not support Speech Recognition API.';
             }
         }
 
-        // Run the check on page load
         window.onload = checkSpeechRecognition;
     </script>
 </body>
