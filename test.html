@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speech Recognition API Check</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        .status {
+            font-size: 1.5em;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Speech Recognition API Check</h1>
+    <p id="status" class="status">Checking for Speech Recognition API support...</p>
+
+    <script>
+        // Function to check if the browser supports SpeechRecognition
+        function checkSpeechRecognition() {
+            // Check for SpeechRecognition in window
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+            if (SpeechRecognition) {
+                // SpeechRecognition is supported
+                document.getElementById('status').textContent = 'Your browser supports Speech Recognition API.';
+            } else {
+                // SpeechRecognition is not supported
+                document.getElementById('status').textContent = 'Sorry, your browser does not support Speech Recognition API.';
+            }
+        }
+
+        // Run the check on page load
+        window.onload = checkSpeechRecognition;
+    </script>
+</body>
+</html>
